@@ -33,4 +33,12 @@ public class ScoreService {
     public List <Score> getTopScores (String game) {
         return this.scoreRepository.findTop10ByGameOrderByScoreDesc (game);
     }
+
+    public List <Score> getAllScores () {
+        return this.scoreRepository.findAll ();
+    }
+
+    public LeaderboardService getLeaderboardService() {
+        return this.leaderboardService;
+    }
 }

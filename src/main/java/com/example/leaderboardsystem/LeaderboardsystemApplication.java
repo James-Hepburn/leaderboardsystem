@@ -28,6 +28,10 @@ public class LeaderboardsystemApplication {
                     if (Math.random() > 0.5) scoreService.submitScore (user, "Space Invaders", (int) (Math.random () * 8000));
                 }
             }
+
+            scoreService.getAllScores().forEach(score -> {
+                scoreService.getLeaderboardService().updateLeaderboard(score.getGame(), score.getUser(), score.getScore());
+            });
         };
     }
 }

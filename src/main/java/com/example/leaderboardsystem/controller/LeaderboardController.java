@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 public class LeaderboardController {
@@ -27,10 +28,21 @@ public class LeaderboardController {
     private UserService userService;
 
     @GetMapping("/leaderboard")
-    public String showLeaderboard (@RequestParam(defaultValue = "default") String game, Model model) {
+    public String showLeaderboard (@RequestParam(required = false) String game, Model model) {
+        Set <String> gameKeys = this.leaderboardService.getAllGames ();
+        List <String> games = gameKeys.stream ()
+                .map (key -> key.replace ("leaderboard:", ""))
+                .toList ();
+
+        if (game == null || !games.contains (game)) {
+            game = games.isEmpty () ? "Tetris" : games.get (0);
+        }
+
         List <Map <String, Object>> topPlayers = this.leaderboardService.getTopPlayers (game);
+
         model.addAttribute ("topPlayers", topPlayers);
         model.addAttribute ("game", game);
+        model.addAttribute ("games", games);
         return "leaderboard";
     }
 

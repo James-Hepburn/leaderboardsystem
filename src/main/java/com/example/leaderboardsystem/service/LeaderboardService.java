@@ -53,4 +53,8 @@ public class LeaderboardService {
         Double score = zSetOps.score (key, user.getUsername ());
         return (score != null) ? score.intValue () : null;
     }
+
+    public Set <String> getAllGames() {
+        return redisTemplate.keys (LEADERBOARD_KEY_PREFIX + "*");
+    }
 }
